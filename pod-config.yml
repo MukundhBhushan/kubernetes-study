@@ -1,0 +1,19 @@
+#name the file what ever u want
+#use "pod" sinnpet to gen init boilerplate code
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod name
+  labels:
+    <lable name>: <name>
+spec:
+  containers:
+  - name: app name
+    image: <Image> #image in docker hub this image will be scaled when the load increases 
+    #optional
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: <Port>

@@ -1,0 +1,18 @@
+#name the file what ever u want
+#use the "service" snippet
+apiVersion: v1
+kind: Service
+metadata:
+  name: Servicename #name of pod
+spec:
+  type: NodePort | ClusterIP #if dev Nodeport else clusterip
+  selector: #target pod details
+    <lable name>: <name> #the key:value pair provided under the template section of the target yaml file
+  ports:
+    - port: <Port> #port which another pod or container can access; other pods ---> current pod
+      targetPort: <Target Port> #containers port exposed as given in docker file. must be equal to the containerPort in kind:"Pod" configfile, sends any incoming trafic to <TargetPort>; current pod ---> other pod or outside world
+      nodePort: <port number> #Access by enduser select port between 3000-32767 if not specified it will be randomly generated used only in dev
+
+    - port: <Port>
+      targetPort: <Target Port>
+      nodePort: <port number>

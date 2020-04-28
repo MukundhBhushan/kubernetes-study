@@ -1,0 +1,36 @@
+#use "deployment" snippet to generate the init boiler plate
+#add the clusterip yaml file for networking
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment name #name of pod
+spec:
+  replicas: 1 #no of pods the deployment needs to make
+  selector: #asks the kubernetes api to create a pod with the lable name as specified in "matchlable"
+    matchLabels:
+      key: value #this is a lable. a key value pair form. Searches for this key-value pair in pods, services, clusterIP. assign value here
+  template: #tells the configuration of the pods being created
+    metadata:
+      labels:
+        key: value #lable assigned to the pod. Use the same name as above assigned value
+    spec:
+    #volumes are optional
+      volumes:
+        - name: <volume name> #set name here
+        #persistant volume claims are for dbs
+          persistentVolumeClaim:
+            claimName: <claim name> #set name here
+      containers:
+        - name: ImageName #image of the image created
+          image: <Image>:<tag> #image from docker hub
+
+        #resources is optional
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: <Port> #the port in which the container is accesible to kubenetes. i.e it is the exposed port eg: react apps start in port 3000 that should be mensioned in the containerport
+            #container port is the port mentioned in the docker image
+        env:
+         - name: envvar # all the env vars go here

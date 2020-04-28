@@ -1,0 +1,16 @@
+apiVersion: extension/v1beta1
+kind: Ingree
+metadata:
+  name: myapp-name
+  annotation:
+    kubernetes.io/ingress.class: nginx #to create a nginx controller
+    nginx.ingress.kubernetes.io/rewite-target: / #removes the additional routes from the request like '/api'
+spec:
+  rules:
+      - http:
+        paths:
+          - path: <route>
+            backend:
+              serviceName: <service name from meta data in the service file>
+              servicePort: <Port property value from sercive.conf file> #this is the port exposed by the container
+
