@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component : server
+  template:
+    metadata:
+      labels:
+        component : server
+    spec:
+      containers:
+      - name: server
+        image: stephengrider/multi-server
+        ports:
+        - containerPort: 5000
+        env:
+          - name: REDIS_HOST
+            value: redis-cluster-ip-service
+          - name: REDIS_PORT
+            value: '6379'
+
+          - name: PGUSER
+            value: postgres
+          - name: PGHOST
+            value: postgres
+          - name: PGDATABASE
+            value: postgres
+          - name: PGPORT
+            value: '5432'
+#for the postgres password use kubctl create secret command
+#the command used to set password
+  #kubctl create secret generic PGPASSWORD --from-literal pgpassword: 12345asdf
+          - name: PGPASSWORD #env or password refering to
+            valueFrom:
+              secretKeyRef:
+                name: pgpassword #alias used while running the kubctl secret command
+                key:  PGPASSWORD #key's value in secret command
